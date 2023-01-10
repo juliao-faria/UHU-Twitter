@@ -1,0 +1,12 @@
+@font-face{
+    font-family: minhaFonte1;
+    src:url("../fonts/NotoSans/NotoSans-Regular.ttf");
+  }
+  @font-face{
+    font-family: minhaFonte2;
+    src:url("../fonts/poppins/Poppins-Bold.ttf");
+  }
+  @font-face{
+    font-family: minhaFonte3;
+    src:url("../fonts/JosefinSans/JosefinSans-Bold.ttf");
+  }
