@@ -1,0 +1,16 @@
+
+.fontnav {
+    color:  #233e62;
+    font-size: 12px;
+  }
+  
+  
+  /*#233e62*/
+  .bg-nav{
+    background: rgb(236, 236, 232);
+    width: 100%!important;
+  }
+  
+  .spn{
+    color:#233e62;
+  }

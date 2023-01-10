@@ -1,9 +1,13 @@
 import React from "react";
+import Twitter from "./components/Twitters/Twitter";
+import NavBar from "./components/UI/NavBar";
 
-
-const App =()=> {
+const App = () => {
     return (
-      <React.Fragment>Hello Appi De Twitter</React.Fragment>
+       <div>
+        <NavBar/>
+        <Twitter/>
+       </div>
     );
 }
 export default App;
