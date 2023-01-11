@@ -1,16 +1,19 @@
 
 .fontnav {
-    color:  #233e62;
+    color:  var(--azul);
     font-size: 12px;
+    font-family: fuente1;
   }
   
   
   /*#233e62*/
   .bg-nav{
-    background: rgb(236, 236, 232);
+    background:var(--grey);
     width: 100%!important;
   }
   
   .spn{
-    color:#233e62;
+    color:var(--azul);
+    font-family: fuente1;
+    font-size: 20px;
   }

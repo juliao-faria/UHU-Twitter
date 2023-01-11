@@ -1,0 +1,17 @@
+@font-face {
+  font-family: fuente1;
+  src: url("./fonts/Roboto/Roboto-Bold.ttf");
+ 
+}
+@font-face {
+font-family: fuente2;
+src: url("./fonts/Roboto/Roboto-Black.ttf");
+
+}
+:root{
+--azul:#05133f;
+--blanco:white;
+--grey: rgb(195, 195, 194);
+--azul1:#2f407e;
+}
+  
