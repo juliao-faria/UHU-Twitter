@@ -9,7 +9,7 @@ const Estatistica = () => {
 				<Card>
 					<table className="table">
 						
-						<tbody>
+						<tbody >
 							<tr>
 								
 								<td>Fecha de descarga</td>
@@ -53,27 +53,27 @@ const Estatistica = () => {
 						<tbody>
 							<tr>
 								
-								<td>Fecha de descarga</td>
-								<td>Desde 2022-12-01 has 2022-12-02</td>
+								<td>Carlos</td>
+								<td>8 tweets</td>
 							</tr>
 							<tr>
 							
-								<td>Tweet más retuiteado.</td>
-								<td>La vida de Leonel Messi en el football</td>
+								<td>Enrique</td>
+								<td>21 tweets</td>
 							</tr>
 							<tr>
 								
-								<td>Url más popular</td>
-								<td>https://moodle.uhu.es - <span>Numero de veces 6</span></td>
+								<td>Juliao</td>
+								<td>12 tweets</td>
 							</tr>
 							<tr>
 								
-								<td>Hashtags más frecuentes</td>
-								<td>#ahhahaahahhahah - <span>Numero de veces 17</span></td>
+								<td>Daniel</td>
+								<td>14 tweets</td>
 							</tr><tr>
 								
-								<td>Usuarios más mencionados</td>
-								<td>Carlos Argentino - <span>Numero de veces 12</span></td>
+								<td>Pablo</td>
+								<td>19 tweets</td>
 							</tr>
 						</tbody>
 						

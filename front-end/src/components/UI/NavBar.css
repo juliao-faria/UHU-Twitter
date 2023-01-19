@@ -17,3 +17,8 @@
     font-family: fuente1;
     font-size: 20px;
   }
+
+  .link{
+    color:  var(--azul);
+    text-decoration: none!important;
+  }
