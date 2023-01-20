@@ -102,7 +102,7 @@ const ConsultasParametricas = () => {
 										className="custom-control-label"
 										for="customControlAutosizing"
 									>
-										Tweet con más de x comentarios
+										Tweets con más de x comentarios
 									</label>
 								</div>
 							</div>
@@ -164,7 +164,7 @@ const ConsultasParametricas = () => {
 										className="custom-control-label"
 										for="customControlAutosizing"
 									>
-										Descartar los retweets
+										Expresiones
 									</label>
 								</div>
 							</div>
