@@ -16,7 +16,7 @@ const NavBar = () => {
 					>
 						<span className="navbar-toggler-icon"></span>
 					</button>
-					<span className="spn">TWITTERS</span>
+					<span className="spn">TWEETS-APP</span>
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav ml-auto">
 							<li className="nav-item active">
@@ -31,14 +31,14 @@ const NavBar = () => {
 								<a className="nav-link">
 									<span className="fontnav">
 										{" "}
-										<Link className="link" to="/twitts">TWITTS</Link>
+										<Link className="link" to="/twitts">TWEETS</Link>
 									</span>
 								</a>
 							</li>
 							<li className="nav-item active">
 								<a className="nav-link">
 									<span className="fontnav">
-										<Link className="link" to="/consultas">CONSULTAS PARAMETRIZADAS</Link>
+										<Link className="link" to="/consultas">PARAMETRIZADAS</Link>
 									</span>
 								</a>
 							</li>
