@@ -186,7 +186,8 @@ const ConsultasParametricas = () => {
 									<th scope="col">Usuario</th>
 									<th scope="col">Hashtag</th>
 									<th scope="col">Nº de comentarios</th>
-									<th scope="col">Geolocalización</th>
+									<th scope="col">Palabra</th>
+                                    <th scope="col">Expresión</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -196,6 +197,7 @@ const ConsultasParametricas = () => {
 									<td>Otto</td>
 									<td>@mdo</td>
 									<td>@mdo</td>
+                                    <td>Mark</td>
 								</tr>
 								<tr>
 									<th scope="row">2</th>
@@ -203,6 +205,7 @@ const ConsultasParametricas = () => {
 									<td>Thornton</td>
 									<td>@fat</td>
 									<td>@fat</td>
+                                    <td>Mark</td>
 								</tr>
 								<tr>
 									<th scope="row">3</th>
@@ -210,6 +213,7 @@ const ConsultasParametricas = () => {
 									<td>the Bird</td>
 									<td>@twitter</td>
 									<td>@twitter</td>
+                                    <td>Mark</td>
 								</tr>
 							</tbody>
 						</table>
