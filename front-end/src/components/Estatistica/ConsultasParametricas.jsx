@@ -102,7 +102,7 @@ const ConsultasParametricas = () => {
 										className="custom-control-label"
 										for="customControlAutosizing"
 									>
-										Tweets con más de x comentarios
+										Tweet con más de x comentarios
 									</label>
 								</div>
 							</div>
@@ -133,7 +133,7 @@ const ConsultasParametricas = () => {
 										className="custom-control-label"
 										for="customControlAutosizing"
 									>
-										Buscar tweets con geolocalización
+										Palabras en el tweet
 									</label>
 								</div>
 							</div>
