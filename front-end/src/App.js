@@ -1,6 +1,6 @@
 import React from "react";
-import Twitter from "./components/Twitters/Twitter";
-import NavBar from "./components/UI/NavBar";
+import Twitter from "./components/TwittersRoutes/Twitter";
+
 
 
 const App = () => {

@@ -13,7 +13,7 @@ const Estatistica = () => {
 							<tr>
 								
 								<td>Fecha de descarga</td>
-								<td>Desde 2022-12-01 has 2022-12-02</td>
+								<td>Desde 2022-12-01 Hasta 2022-12-02</td>
 							</tr>
 							<tr>
 							
