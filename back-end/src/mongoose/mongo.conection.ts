@@ -10,12 +10,7 @@ export class MongooseProvider {
             useUnifiedTopology: true,
             useFindAndModify: false,
             useCreateIndex: true,
-            autoIndex: true,
-            poolSize: 10,
-            bufferMaxEntries: 0,
-            connectTimeoutMS: 10000,
-            socketTimeoutMS: 45000,
-            family: 4
+            autoIndex: true
         });
     }
     

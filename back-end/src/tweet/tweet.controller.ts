@@ -18,17 +18,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class TweetController {
   // injection using constructor => this will declare and instantiate the TweetService at the same place
   constructor(private readonly tweetService: TweetService) {}
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async getAllTweets(@Request() req: any): Promise<Tweet[]> {
-    return this.tweetService.getAllTweets();
-  }
   
   @UseGuards(JwtAuthGuard)
-  @Get("/a")
-  async getAllTweets2(): Promise<any> {
-    return this.tweetService.getAllTweets();
+  @Get("/all/:collection")
+  async getAllTweets(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.getAllTweets(collection);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -38,26 +32,26 @@ export class TweetController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("/count")
-  async getCountTweets(): Promise<any> {
-    return this.tweetService.getCountTweets();
+  @Get("/count/:collection")
+  async getCountTweets(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.getCountTweets(collection);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("/dates")
-  async getDateExtrems(): Promise<any> {
-    return this.tweetService.getDateExtrems();
+  @Get("/dates/:collection")
+  async getDateExtrems(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.getDateExtrems(collection);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("/retweet")
-  async getTextMostRetweet(): Promise<any> {
-    return this.tweetService.getTextMostRetweet();
+  @Get("/retweet/:collection")
+  async getTextMostRetweet(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.getTextMostRetweet(collection);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("/top-tweets")
-  async get10MostTweets(): Promise<any> {
-    return this.tweetService.get10MostTweets();
+  @Get("/top-tweets/:collection")
+  async get10MostTweets(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.get10MostTweets(collection);
   }
 }

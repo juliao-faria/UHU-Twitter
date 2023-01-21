@@ -10,24 +10,24 @@ export class TweetService {
     private readonly mongooseProvider: MongooseProvider
   ) {}
 
-  async getAllTweets(): Promise<any> {
+  async getAllTweets(collection: string): Promise<any> {
     const pipeline = [
         { $match: {"data.author_id": "1566443121780686853"} }
     ];
-    return await this.mongooseProvider.aggregate("tweets",pipeline);
+    return await this.mongooseProvider.aggregate(collection,pipeline);
   }
 
   async getAllSchemaNames(): Promise<any> {
     return await this.mongooseProvider.getSchemaNames();
   }
 
-  async getCountTweets(): Promise<any> {
+  async getCountTweets(collection: string): Promise<any> {
     const pipeline = [{ $count: "totalRows" }];
-    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    const result = await this.mongooseProvider.aggregate(collection,pipeline);
     return result[0].totalRows;
   }
 
-  async getDateExtrems(): Promise<any> {
+  async getDateExtrems(collection: string): Promise<any> {
     const pipeline = [
       { $group: {
           _id: null,
@@ -35,11 +35,11 @@ export class TweetService {
           newestDate: { $max: "$data.created_at" }
       } }
     ];
-    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    const result = await this.mongooseProvider.aggregate(collection,pipeline);
     return { oldestDate: result[0].oldestDate, newestDate: result[0].newestDate };
   }
 
-  async getTextMostRetweet(): Promise<any> {
+  async getTextMostRetweet(collection: string): Promise<any> {
     const pipeline = [
       {
         '$sort': {
@@ -54,11 +54,11 @@ export class TweetService {
         }
       }
     ]
-    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    const result = await this.mongooseProvider.aggregate(collection,pipeline);
     return { text: result[0].text };
   }
 
-  async get10MostTweets(): Promise<any> {
+  async get10MostTweets(collection: string): Promise<any> {
     const pipeline = [
       {
         '$group': {
@@ -88,6 +88,6 @@ export class TweetService {
         '$limit': 10
       }
     ]
-    return await this.mongooseProvider.aggregate("tweets",pipeline);
+    return await this.mongooseProvider.aggregate(collection,pipeline);
   }
 }
