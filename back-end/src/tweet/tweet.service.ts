@@ -90,4 +90,184 @@ export class TweetService {
     ]
     return await this.mongooseProvider.aggregate(collection,pipeline);
   }
+
+  async getTextMostLikes(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$sort': {
+          'data.public_metrics.like_count': -1
+        }
+      }, {
+        '$limit': 1
+      }, {
+        '$project': {
+          '_id': 0, 
+          'text': '$data.text'
+        }
+      }
+    ]
+    const result = await this.mongooseProvider.aggregate(collection,pipeline);
+    return { text: result[0].text };
+  }
+
+  async getTweetsByLang(collection: string): Promise<any> {
+    const languageCodes = {
+      "en": "Inglés",
+      "es": "Español"
+    };
+    const pipeline = [
+      {
+        '$group': {
+          '_id': '$data.lang', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$project': {
+          '_id': 0, 
+          'lang': '$_id', 
+          'tweets': '$count'
+        }
+      }
+    ]
+    const res = await this.mongooseProvider.aggregate(collection,pipeline);
+    const sanitazeRes = res.map(element => 
+      {
+        element.lang = languageCodes[element.lang];
+        return element;
+      });
+    return sanitazeRes
+  }
+
+  async get10Urls(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$unwind': {
+          'path': '$data.entities.urls'
+        }
+      }, {
+        '$group': {
+          '_id': '$data.entities.urls.url', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$sort': {
+          'count': -1
+        }
+      }, {
+        '$limit': 10
+      }, {
+        '$project': {
+          '_id': 0, 
+          'cantidad': '$count', 
+          'url': '$_id'
+        }
+      }
+    ]
+    return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
+
+  async get10Mentions(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$unwind': {
+          'path': '$data.entities.mentions'
+        }
+      }, {
+        '$group': {
+          '_id': '$data.entities.mentions.username', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$sort': {
+          'count': -1
+        }
+      }, {
+        '$limit': 10
+      }, {
+        '$project': {
+          '_id': 0, 
+          'mentions': '$count', 
+          'username': '$_id'
+        }
+      }
+    ]
+    return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
+
+  async get10AnotationsByType(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$unwind': {
+          'path': '$data.entities.annotations'
+        }
+      }, {
+        '$group': {
+          '_id': {
+            'type': '$data.entities.annotations.type', 
+            'text': '$data.entities.annotations.normalized_text'
+          }, 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$group': {
+          '_id': '$_id.type', 
+          'elements': {
+            '$push': {
+              'text': '$_id.text', 
+              'count': '$count'
+            }
+          }
+        }
+      }, {
+        '$project': {
+          '_id': 0, 
+          'type': '$_id', 
+          'annotation': {
+            '$arrayElemAt': [
+              '$elements', {
+                '$indexOfArray': [
+                  '$elements.count', {
+                    '$max': '$elements.count'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+    return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
+
+  async get10Places(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$unwind': {
+          'path': '$includes.places'
+        }
+      }, {
+        '$group': {
+          '_id': '$includes.places.country', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$sort': {
+          'count': -1
+        }
+      }, {
+        '$limit': 10
+      }
+    ]
+    return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
 }
