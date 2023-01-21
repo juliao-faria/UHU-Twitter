@@ -5,7 +5,7 @@ import Estatistica from "../Estatistica/Estatisticas";
 import Reportes from "../Estatistica/Reportes";
 import NavBar from "../UI/NavBar";
 
-const Twitter = () => {
+const Twitter = (props) => {
 	
 	return (
 		<BrowserRouter>
