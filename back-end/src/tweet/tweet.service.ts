@@ -1,19 +1,93 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Tweet } from './interfaces/tweet.interface';
+import { Injectable } from '@nestjs/common';
 import { AuthUserDto } from '../users/dto/authUser.dto';
+import { MongooseProvider } from 'src/mongoose/mongo.conection';
+
 
 @Injectable()
 export class TweetService {
-  // injection using token
+
   constructor(
-    @InjectModel('tweet') private readonly tweetModel: Model<Tweet>,
+    private readonly mongooseProvider: MongooseProvider
   ) {}
 
-  async getAllTweets(user: AuthUserDto): Promise<Tweet[]> {
-    const aggregate = await this.tweetModel.aggregate().limit(5).exec();
-    return aggregate;
+  async getAllTweets(): Promise<any> {
+    const pipeline = [
+        { $match: {"data.author_id": "1566443121780686853"} }
+    ];
+    return await this.mongooseProvider.aggregate("tweets",pipeline);
   }
 
+  async getAllSchemaNames(): Promise<any> {
+    return await this.mongooseProvider.getSchemaNames();
+  }
+
+  async getCountTweets(): Promise<any> {
+    const pipeline = [{ $count: "totalRows" }];
+    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    return result[0].totalRows;
+  }
+
+  async getDateExtrems(): Promise<any> {
+    const pipeline = [
+      { $group: {
+          _id: null,
+          oldestDate: { $min: "$data.created_at" },
+          newestDate: { $max: "$data.created_at" }
+      } }
+    ];
+    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    return { oldestDate: result[0].oldestDate, newestDate: result[0].newestDate };
+  }
+
+  async getTextMostRetweet(): Promise<any> {
+    const pipeline = [
+      {
+        '$sort': {
+          'data.public_metrics.retweet_count': -1
+        }
+      }, {
+        '$limit': 1
+      }, {
+        '$project': {
+          '_id': 0, 
+          'text': '$data.text'
+        }
+      }
+    ]
+    const result = await this.mongooseProvider.aggregate("tweets",pipeline);
+    return { text: result[0].text };
+  }
+
+  async get10MostTweets(): Promise<any> {
+    const pipeline = [
+      {
+        '$group': {
+          '_id': '$data.author_id', 
+          'author_name': {
+            '$first': '$includes.users'
+          }, 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$sort': {
+          'count': -1
+        }
+      }, {
+        '$project': {
+          '_id': 1, 
+          'count': 1, 
+          'author_name': {
+            '$arrayElemAt': [
+              '$author_name', 0
+            ]
+          }
+        }
+      }, {
+        '$limit': 10
+      }
+    ]
+    return await this.mongooseProvider.aggregate("tweets",pipeline);
+  }
 }
