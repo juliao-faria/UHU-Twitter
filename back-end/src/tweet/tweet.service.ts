@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthUserDto } from '../users/dto/authUser.dto';
 import { MongooseProvider } from 'src/mongoose/mongo.conection';
 
@@ -269,5 +269,112 @@ export class TweetService {
       }
     ]
     return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
+
+  async parametricQuery(collection: string, body: any): Promise<any> {
+    const pipeline = []
+    if (body.startDate != undefined && body.endDate != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            '$expr': {
+              '$and': [
+                {
+                  '$gte': [
+                    {
+                      '$dateFromString': {
+                        'dateString': '$data.created_at'
+                      }
+                    }, new Date(body.startDate)
+                  ]
+                }, {
+                  '$lte': [
+                    {
+                      '$dateFromString': {
+                        'dateString': '$data.created_at'
+                      }
+                    }, new Date(body.endDate)
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      )
+    }
+    if (body.text != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            'data.text': {
+              '$regex': `${body.text}`, 
+              '$options': 'im'
+            }
+          }
+        }
+      )
+    }
+    if (body.userName != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            'includes.users.0.username': {
+              '$regex': `${body.userName}`, 
+              '$options': 'g'
+            }
+          }
+        }
+      )
+    } 
+    if (body.retweet != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            'data.public_metrics.retweet_count': {
+              '$gte': body.retweet
+            }
+          }
+        }
+      )
+    }
+    if (body.mentions != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            '$expr': {
+              '$gte': [
+                {
+                  '$size': {
+                    '$ifNull': [
+                      '$data.entities.mentions', []
+                    ]
+                  }
+                }, body.mentions
+              ]
+            }
+          }
+        }
+      )
+    }
+    if (body.lang != undefined) {
+      pipeline.push(
+        {
+          '$match': {
+            'data.lang': `${body.lang}`
+          }
+        }
+      )
+    }
+    if (body.newCollectionName != undefined) {
+      pipeline.push(
+        {
+          "$out": `${body.newCollectionName}`
+      }
+      )
+      return await this.mongooseProvider.aggregate(collection,pipeline);
+    } else {
+      throw new ForbiddenException("Se esperaba un nombre de colección")
+    }
+
   }
 }

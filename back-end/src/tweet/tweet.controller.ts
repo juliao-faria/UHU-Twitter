@@ -89,4 +89,10 @@ export class TweetController {
   async get10Places(@Param('collection') collection: string): Promise<any> {
     return this.tweetService.get10Places(collection);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("/parametric/:collection")
+  async parametricQuery(@Param('collection') collection: string, @Body() body: any): Promise<any> {
+    return this.tweetService.parametricQuery(collection, body);
+  }
 }
