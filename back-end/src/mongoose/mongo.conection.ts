@@ -24,7 +24,7 @@ export class MongooseProvider {
 
     async getSchemaNames() {
         const collections = await this.connection.db.listCollections().toArray();
-        const collectionNames = collections.map((collection) => collection.name);
+        const collectionNames = collections.filter(collection => collection.name != "users").map((collection) => collection.name);
         return collectionNames;
     }
 }
