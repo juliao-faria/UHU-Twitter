@@ -95,4 +95,10 @@ export class TweetController {
   async parametricQuery(@Param('collection') collection: string, @Body() body: any): Promise<any> {
     return this.tweetService.parametricQuery(collection, body);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("/user-names/:collection")
+  async getUserNames(@Param('collection') collection: string): Promise<any> {
+    return this.tweetService.getUserNames(collection);
+  }
 }

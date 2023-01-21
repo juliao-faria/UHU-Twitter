@@ -377,4 +377,32 @@ export class TweetService {
     }
 
   }
+
+  async getUserNames(collection: string): Promise<any> {
+    const pipeline = [
+      {
+        '$unwind': {
+          'path': '$includes.users'
+        }
+      }, {
+        '$match': {
+          '$expr': {
+            '$eq': [
+              '$data.author_id', '$includes.users.id'
+            ]
+          }
+        }
+      }, {
+        '$group': {
+          '_id': '$includes.users.username'
+        }
+      }, {
+        '$project': {
+          '_id': 0, 
+          'nombre': '$_id'
+        }
+      }
+    ]
+    return await this.mongooseProvider.aggregate(collection,pipeline);
+  }
 }
