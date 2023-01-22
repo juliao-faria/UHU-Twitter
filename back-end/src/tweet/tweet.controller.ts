@@ -17,7 +17,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class TweetController {
   // injection using constructor => this will declare and instantiate the TweetService at the same place
   constructor(private readonly tweetService: TweetService) {}
-  
+    
   @UseGuards(JwtAuthGuard)
   @Get("/all/:collection")
   async getAllTweets(@Param('collection') collection: string): Promise<any> {

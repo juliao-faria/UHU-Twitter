@@ -1,6 +1,48 @@
+import { useState,useEffect } from "react";
 import Card from "../UI/Card";
+import axios from "axios";
 import "./Estatistica.css";
 const Estatistica = () => {
+   const [estadistica,setEstadistica]=useState({oldestDate:"",newestDate:""})
+   const [text,setText]=useState('')
+   const [url,setUrl]=useState('')
+
+	const fecha = () => {
+		axios.get("http://localhost:9876/api/v1/tweets/dates/tweets",{
+				headers: {"Authorization": `Bearer ${localStorage.getItem("auth")}`}
+			  })
+			.then((response) => {
+				setEstadistica({...estadistica,oldestDate:response.data.oldestDate,newestDate:response.data.newestDate});
+			})
+	};
+	const masPopular=()=>{
+		axios.get("http://localhost:9876/api/v1/tweets/retweet/tweets",{
+				headers: {"Authorization": `Bearer ${localStorage.getItem("auth")}`}
+			  })
+			.then((response) => {
+				setText(response.data.text);
+	  })
+	}
+
+	const masPopularUrl=()=>{
+		axios.get("http://localhost:9876/api/v1/tweets/top-urls/tweets",{
+				headers: {"Authorization": `Bearer ${localStorage.getItem("auth")}`}
+			  })
+			.then((response) => {
+				console.log(response.data)
+	  })
+	}
+	
+	
+
+var date1 = new Date(estadistica.oldestDate);
+var date2 = new Date(estadistica.newestDate);
+
+useEffect(() => {
+	fecha()
+	masPopular()
+	masPopularUrl()
+}, []);
 	return (
 		<div className="container">
 			<br />
@@ -13,12 +55,12 @@ const Estatistica = () => {
 							<tr>
 								
 								<td>Fecha de descarga</td>
-								<td>Desde 2022-12-01 Hasta 2022-12-02</td>
+								<td>Desde {date1.getDate()}/{date1.getMonth()+1}/{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}s.  Hasta {date2.getDate()}/{date2.getMonth()+1}/{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}s.</td>
 							</tr>
 							<tr>
 							
 								<td>Tweet más retuiteado.</td>
-								<td>La vida de Leonel Messi en el football</td>
+								<td>{text}</td>
 							</tr>
 							<tr>
 								
@@ -35,7 +77,6 @@ const Estatistica = () => {
 								<td>Carlos Argentino - <span>Numero de veces 12</span></td>
 							</tr>
 						</tbody>
-						
 					</table>
 				</Card>
 

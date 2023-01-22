@@ -34,10 +34,6 @@ const Login = ({estaLogueado}) => {
             });
 	};
 
-	const enviaDatos = (e) => {
-		e.preventDefault();
-	};
-
 	return (
 		<section className="container-fluid">
 			<section className="row justify-content-center">

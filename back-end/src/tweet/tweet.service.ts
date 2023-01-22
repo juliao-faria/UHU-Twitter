@@ -158,7 +158,7 @@ export class TweetService {
           'count': -1
         }
       }, {
-        '$limit': 10
+        '$limit': 1
       }, {
         '$project': {
           '_id': 0, 
