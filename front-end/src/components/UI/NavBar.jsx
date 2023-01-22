@@ -1,6 +1,6 @@
 import "./NavBar.css";
 import {Link, Outlet} from "react-router-dom";
-const NavBar = () => {
+const NavBar = ({salir}) => {
 	return (
 		<main>
 			<nav className="bg-nav navbar navbar-expand-lg navbar-light">
@@ -40,6 +40,11 @@ const NavBar = () => {
 									<span className="fontnav">
 										<Link className="link" to="/consultas">PARAMETRIZADAS</Link>
 									</span>
+								</a>
+							</li>
+							<li className="nav-item active">
+								<a className="nav-link">
+									<button onClick={salir} className="btn btn-prymary">Salir</button>
 								</a>
 							</li>
 						</ul>
