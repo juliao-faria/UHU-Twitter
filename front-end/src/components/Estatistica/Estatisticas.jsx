@@ -3,7 +3,7 @@ import Card from "../UI/Card";
 import axios from "axios";
 import "./Estatistica.css";
 const Estatistica = () => {
-	const [estadistica, setEstadistica] = useState({
+	const [fechas, setFechas] = useState({
 		oldestDate: "",
 		newestDate: "",
 	});
@@ -20,8 +20,8 @@ const Estatistica = () => {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				setEstadistica({
-					...estadistica,
+				setFechas({
+					...fechas,
 					oldestDate: response.data.oldestDate,
 					newestDate: response.data.newestDate,
 				});
@@ -106,9 +106,20 @@ const Estatistica = () => {
 				});
 			});
 	};
+	const buscarUsuario= () => {
+		axios
+			.get("http://localhost:9876/api/v1/tweets/lang/tweets", {
+				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
+			})
+			.then((response) => {
+				response.data.map((idioma) => {
+					setIdiomas((idiomas) => [...idiomas, idioma]);
+				});
+			});
+	};
 
-	var date1 = new Date(estadistica.oldestDate);
-	var date2 = new Date(estadistica.newestDate);
+	var date1 = new Date(fechas.oldestDate);
+	var date2 = new Date(fechas.newestDate);
 
 	useEffect(() => {
 		fecha();
