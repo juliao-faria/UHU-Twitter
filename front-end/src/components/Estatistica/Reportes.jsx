@@ -3,16 +3,18 @@ import Card from "../UI/Card";
 import axios from "axios";
 const Reportes = () => {
 
-	const datosGeneral = () => {
-		axios.get("http://localhost:9876/api/v1/tweets/schema",{
-				headers: {"Authorization": `Bearer ${localStorage.getItem("auth")}`}
-			  })
-			.then((response) => {
-				console.log(response.data)
+	const mensionTweets = () => {
+		axios
+			.get("http://localhost:9876/api/v1/tweets/all/tweets", {
+				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
+			.then((response) => {
+				
+			});
 	};
-	
-	
+	useEffect(() => {
+		mensionTweets()
+	}, []);
 	
 	return (
 		<div>
@@ -49,7 +51,7 @@ const Reportes = () => {
 						</tr>
 					</tbody>
 				</table>
-				<button onClick={datosGeneral}>Probar</button>
+				
 			</Card>
 		</div>
 	);

@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router-dom";
 const NavBar = ({salir}) => {
 	return (
 		<main>
-			<nav className="bg-nav navbar navbar-expand-lg navbar-light">
+			<nav  className="bg-nav navbar navbar-expand-lg navbar-light">
 				<div className="container">
 					<button
 						className="navbar-toggler"
@@ -51,6 +51,8 @@ const NavBar = ({salir}) => {
 					</div>
 				</div>
 			</nav>
+			<br />
+			<br />
 			<section>
 				<Outlet />
 			</section>

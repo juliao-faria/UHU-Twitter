@@ -10,6 +10,8 @@
   .bg-nav{
     background:var(--grey);
     width: 100%!important;
+    position: fixed;
+    z-index: 10;
   }
   
   .spn{
