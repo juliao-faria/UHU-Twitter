@@ -24,7 +24,7 @@ export class TweetService {
   async getCountTweets(collection: string): Promise<any> {
     const pipeline = [{ $count: "totalRows" }];
     const result = await this.mongooseProvider.aggregate(collection,pipeline);
-    return result[0].totalRows;
+    return result[0] != null ? result[0].totalRows : 0;
   }
 
   async getDateExtrems(collection: string): Promise<any> {
@@ -36,7 +36,11 @@ export class TweetService {
       } }
     ];
     const result = await this.mongooseProvider.aggregate(collection,pipeline);
-    return { oldestDate: result[0].oldestDate, newestDate: result[0].newestDate };
+    if (result[0] != null) {
+      return { oldestDate: result[0].oldestDate, newestDate: result[0].newestDate };
+    } else {
+      return { oldestDate: null, newestDate: null };
+    }
   }
 
   async getTextMostRetweet(collection: string): Promise<any> {
@@ -55,7 +59,7 @@ export class TweetService {
       }
     ]
     const result = await this.mongooseProvider.aggregate(collection,pipeline);
-    return { text: result[0].text };
+    return { text: result[0] != null ? result[0].text : "" };
   }
 
   async get10MostTweets(collection: string): Promise<any> {
@@ -107,7 +111,7 @@ export class TweetService {
       }
     ]
     const result = await this.mongooseProvider.aggregate(collection,pipeline);
-    return { text: result[0].text };
+    return { text: result[0] != null  ? result[0].text : "" };
   }
 
   async getTweetsByLang(collection: string): Promise<any> {

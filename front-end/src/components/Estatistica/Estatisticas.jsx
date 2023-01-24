@@ -80,8 +80,8 @@ const Estatistica = () => {
 			.then((response) => {
 				setUrlPopular({
 					...urlPopular,
-					url: response.data[0].url,
-					cantidad: response.data[0].cantidad,
+					url: response.data[0] != null ? response.data[0].url : "",
+					cantidad: response.data[0] != null ? response.data[0].cantidad : 0,
 				});
 			});
 	};
@@ -151,9 +151,10 @@ const Estatistica = () => {
 		reload()
 	}, [selectedSchema])
 
-	
-	var date1 = new Date(fechas.oldestDate);
-	var date2 = new Date(fechas.newestDate);
+	if (fechas != null && fechas.oldestDate != null) {
+		var date1 = new Date(fechas.oldestDate);
+		var date2 = new Date(fechas.newestDate);
+	}
 	
 	return (
 		<div className="container">
@@ -180,13 +181,16 @@ const Estatistica = () => {
 						<h5 className="p-4">Datos general</h5>
 						<tr>
 							<td>Fechas</td>
-							<td>
-								Primer Registro: {date1.getDate()}/{date1.getMonth() + 1}/
-								{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}s.
-								<br/>
-								Ultimo Registro: {date2.getDate()}/{date2.getMonth() + 1}/
-								{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}s.
-							</td>
+							{
+								date1 != null && date2 != null &&
+								<td>
+									Primer Registro: {date1.getDate()}/{date1.getMonth() + 1}/
+									{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}s.
+									<br/>
+									Ultimo Registro: {date2.getDate()}/{date2.getMonth() + 1}/
+									{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}s.
+								</td>
+							}
 						</tr>
 						<tr>
 							<td>Texto del tweet con más retweets</td>
@@ -194,10 +198,13 @@ const Estatistica = () => {
 						</tr>
 						<tr>
 							<td>Url más popular</td>
-							<td>
+							{
+								urlPopular != null &&
+								<td>
 								{urlPopular.url} -{" "}
 								<span>Numero de veces {urlPopular.cantidad}</span>
 							</td>
+							}
 						</tr>
 						<tr>
 							<td>Cantidad de tweets en la colección</td>
