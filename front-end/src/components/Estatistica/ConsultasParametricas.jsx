@@ -136,7 +136,7 @@ const ConsultasParametricas = () => {
 
 	useEffect(() => {
 		buscarSchema();
-		//buscarUsuarios();
+		buscarUsuarios();
 		buscarIdiomas();
 		mensionTweets();
 		cantLikes();
@@ -165,7 +165,7 @@ const ConsultasParametricas = () => {
 									onChange={nuevaColecion}
 								>
 									<option selected>Choose...</option>
-									{/*usuarios.map(usuario=><option value={usuario.nombre}>{usuario.nombre}</option>)*/}
+									{usuarios.map(usuario=><option value={usuario.nombre}>{usuario.nombre}</option>)}
 								</select>
 							</div>
 							<div className="col-auto my-1">
@@ -334,7 +334,7 @@ const ConsultasParametricas = () => {
 						<br />
 					</form>
 				</div>
-			</Card>
+			</Card>			
 		</React.Fragment>
 	);
 };

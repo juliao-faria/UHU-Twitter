@@ -401,6 +401,8 @@ export class TweetService {
           '_id': 0, 
           'nombre': '$_id'
         }
+      },{
+        '$limit': 10
       }
     ]
     return await this.mongooseProvider.aggregate(collection,pipeline);
