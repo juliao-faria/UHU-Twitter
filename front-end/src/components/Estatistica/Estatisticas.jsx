@@ -107,15 +107,7 @@ const Estatistica = () => {
 			});
 	};
 
-	const buscarSchema= () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/schema", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-			console.log(response.data)
-			});
-	};
+
 
 
 	var date1 = new Date(fechas.oldestDate);
@@ -130,7 +122,6 @@ const Estatistica = () => {
 		cantLikes()
 		buscarPaises()
 		buscarIdiomas()
-		buscarSchema()
 	}, []);
 	return (
 		<div className="container">
