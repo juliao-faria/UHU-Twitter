@@ -14,9 +14,44 @@ const Estatistica = () => {
 	const [liked, setLiked] = useState('');
 	const [paises, setPaises] = useState([]);
 	const [idiomas, setIdiomas] = useState([]);
+	const [schemas, setSchemas] = useState([]);
+	const [selectedSchema, setSelectedSchema] = useState("tweets");
+
+	const reload = () => {
+		setText("");
+		setUrlPopular({url: "", cantidad: ""});
+		setCantTweets("");
+		setMensiones([]);
+		setLiked('');
+		setPaises([]);
+		setIdiomas([]);
+		setSchemas([]);
+		buscarSchema();
+		fecha();
+		masPopular();
+		masPopularUrl();
+		cantidadTweets();
+		mensionTweets();
+		cantLikes();
+		buscarPaises();
+		buscarIdiomas();
+	}
+
+	const buscarSchema = () => {
+		axios
+			.get("http://localhost:9876/api/v1/tweets/schema", {
+				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
+			})
+			.then((response) => {
+				response.data.map((schema) => {
+					setSchemas((schemas) => [...schemas, schema]);
+				});
+			});
+	};
+
 	const fecha = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/dates/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/dates/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
@@ -29,7 +64,7 @@ const Estatistica = () => {
 	};
 	const masPopular = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/retweet/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/retweet/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
@@ -39,7 +74,7 @@ const Estatistica = () => {
 
 	const masPopularUrl = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/top-urls/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/top-urls/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
@@ -53,7 +88,7 @@ const Estatistica = () => {
 
 	const cantidadTweets = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/count/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/count/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
@@ -63,20 +98,21 @@ const Estatistica = () => {
 
 	const mensionTweets = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/top-mentions/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/top-mentions/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				response.data.map((mension) => {
-					setMensiones((mensiones) => [...mensiones, mension]);
-				});
+				setMensiones(response.data)
+			})
+			.finally(() => {
+				console.log(mensiones);
 			});
 	};
 
 	
 	const cantLikes = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/likes/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/likes/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
@@ -85,64 +121,75 @@ const Estatistica = () => {
 	};
 	const buscarPaises = () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/countries/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/countries/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				response.data.map((pais) => {
-					setPaises((paises) => [...paises, pais]);
-				});
+				setPaises(response.data)
 			});
 	};
 
 	const buscarIdiomas= () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/lang/tweets", {
+			.get(`http://localhost:9876/api/v1/tweets/lang/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				response.data.map((idioma) => {
-					setIdiomas((idiomas) => [...idiomas, idioma]);
-				});
+				setIdiomas(response.data)
 			});
 	};
 
-
-
-
-	var date1 = new Date(fechas.oldestDate);
-	var date2 = new Date(fechas.newestDate);
+	const elegirSchema = (e) => {
+		if (e.target.value === "Choose...") {
+			setSelectedSchema("")
+		} else {
+			setSelectedSchema(e.target.value)
+		}
+	}
 
 	useEffect(() => {
-		fecha();
-		masPopular();
-		masPopularUrl();
-		cantidadTweets();
-		mensionTweets();
-		cantLikes()
-		buscarPaises()
-		buscarIdiomas()
-	}, []);
+		reload()
+	}, [selectedSchema])
+
+	
+	var date1 = new Date(fechas.oldestDate);
+	var date2 = new Date(fechas.newestDate);
+	
 	return (
 		<div className="container">
 			<br />
 			<br />
-
+			<div className="col-auto my-0">
+				<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
+					Preference
+				</label>
+				<select
+					className="custom-select mr-sm-2"
+					id="inlineFormCustomSelect"
+					name="schemaName"
+					onChange={elegirSchema}
+					value={selectedSchema}
+				>
+					{schemas.map(schema=><option value={schema}>{schema}</option>)}
+				</select>
+			</div>
+			<br />
 			<Card>
 				<table className="table">
 					<tbody>
 						<h5 className="p-4">Datos general</h5>
 						<tr>
-							<td>Fecha de descarga</td>
+							<td>Fechas</td>
 							<td>
-								Desde {date1.getDate()}/{date1.getMonth() + 1}/
+								Primer Registro: {date1.getDate()}/{date1.getMonth() + 1}/
 								{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}s.
-								Hasta {date2.getDate()}/{date2.getMonth() + 1}/
+								<br/>
+								Ultimo Registro: {date2.getDate()}/{date2.getMonth() + 1}/
 								{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}s.
 							</td>
 						</tr>
 						<tr>
-							<td>Tweet más retuiteado.</td>
+							<td>Texto del tweet con más retweets</td>
 							<td>{text}</td>
 						</tr>
 						<tr>
@@ -153,11 +200,11 @@ const Estatistica = () => {
 							</td>
 						</tr>
 						<tr>
-							<td>Cantidad de tweets</td>
-							<td>Hay {cantTweets} tweets guardados en el sistema</td>
+							<td>Cantidad de tweets en la colección</td>
+							<td>Hay {cantTweets} tweets guardados en la colección</td>
 						</tr>
 						<tr>
-							<td>Texto con másl likes</td>
+							<td>Texto del tweet con más likes</td>
 							<td>
 								{liked}
 							</td>

@@ -38,7 +38,6 @@ const Twitter = (props) => {
 				<Routes>
 					<Route path="/" element={<NavBar salir={salir}/>}>
 						<Route index element={<Estatistica />} />
-						<Route path="twitts" element={<Reportes />} />
 						<Route path="cerrar" element={<Longin />} />
 						<Route path="consultas" element={<ConsultasParametricas />} />
 						<Route path="*" element={<Navigate replace to="/" />} />

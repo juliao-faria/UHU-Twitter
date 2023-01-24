@@ -5,19 +5,11 @@ import axios from "axios";
 import "./ConsultasParametricas.css";
 import DateTimePicker from 'react-datetime-picker';
 import {useNavigate} from 'react-router-dom'; 
-
+import { format } from 'date-fns';
 
 const ConsultasParametricas = () => {
-	const [text, setText] = useState("");
 	const [schemas, setSchemas] = useState([]);
-	const [urlPopular, setUrlPopular] = useState({url: "", cantidad: ""});
-	const [top10Tweets, setTop10Tweets] = useState([]);
-	const [mensiones, setMensiones] = useState([]);
 	const [usuarios, setUsuario] = useState([]);
-	const [liked, setLiked] = useState("");
-	const [paises, setPaises] = useState([]);
-	const [idiomas, setIdiomas] = useState([]);
-
 	const [selectedSchema, setSelectedSchema] = useState("");
 	const [nombreNuevaColeccion, setNombreNuevaColeccion] = useState("");
 	const [nombreUsuario, setNombreUsuario] = useState("");
@@ -49,63 +41,6 @@ const ConsultasParametricas = () => {
 			.then((response) => {
 				response.data.map((usuario) => {
 					setUsuario((usuarios) => [...usuarios, usuario]);
-				});
-			});
-	};
-
-	const buscarIdiomas = () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/lang/tweets", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-				response.data.map((idioma) => {
-					setIdiomas((idiomas) => [...idiomas, idioma]);
-				});
-			});
-	};
-	const mensionTweets = () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/top-mentions/tweets", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-				response.data.map((mension) => {
-					setMensiones((mensiones) => [...mensiones, mension]);
-				});
-			});
-	};
-
-	const cantLikes = () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/likes/tweets", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-				setLiked(response.data.text);
-			});
-	};
-
-	const topTweets = () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/top-tweets/tweets", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-				response.data.map((tweet) => {
-					setTop10Tweets((top10Tweets) => [...top10Tweets, tweet]);
-				});
-			});
-	};
-
-	const buscarPaises = () => {
-		axios
-			.get("http://localhost:9876/api/v1/tweets/countries/tweets", {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
-			.then((response) => {
-				response.data.map((pais) => {
-					setPaises((paises) => [...paises, pais]);
 				});
 			});
 	};
@@ -194,8 +129,8 @@ const ConsultasParametricas = () => {
 			console.log(`http://localhost:9876/api/v1/tweets/parametric/${selectedSchema}`);
 			let newCollection = {
 				userName: nombreUsuario != "" ? nombreUsuario : null,
-				startDate: minDate != null ? minDate : null,
-				endDate: maxDate != null ? maxDate : null,
+				startDate: minDate != null ? format(minDate, "yyyy-MM-dd'T'kk:mm:ss.SSS'Z'") : null,
+				endDate: maxDate != null ? format(maxDate, "yyyy-MM-dd'T'kk:mm:ss.SSS'Z'") : null,
 				mentions: menciones != 0 ? menciones : null,
 				retweet: retweetsCount != 0 ? retweetsCount : null,
 				lang: language != "" ? language : null,
@@ -223,11 +158,6 @@ const ConsultasParametricas = () => {
 	useEffect(() => {
 		buscarSchema();
 		buscarUsuarios();
-		buscarIdiomas();
-		mensionTweets();
-		cantLikes();
-		topTweets();
-		buscarPaises();
 	}, []);
 
 	return (
@@ -247,6 +177,7 @@ const ConsultasParametricas = () => {
 					{schemas.map(schema=><option value={schema}>{schema}</option>)}
 				</select>
 			</div>
+			<br />	
 			<br />
 			<div className="col-lg-12">Colección</div>
 			<Card>

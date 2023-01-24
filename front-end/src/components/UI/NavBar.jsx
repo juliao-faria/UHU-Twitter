@@ -30,14 +30,6 @@ const NavBar = ({salir}) => {
 							<li className="nav-item active">
 								<a className="nav-link">
 									<span className="fontnav">
-										{" "}
-										<Link className="link" to="/twitts">COLECTCIONES</Link>
-									</span>
-								</a>
-							</li>
-							<li className="nav-item active">
-								<a className="nav-link">
-									<span className="fontnav">
 										<Link className="link" to="/consultas">PARAMETRIZADAS</Link>
 									</span>
 								</a>
