@@ -31,7 +31,7 @@ const NavBar = ({salir}) => {
 								<a className="nav-link">
 									<span className="fontnav">
 										{" "}
-										<Link className="link" to="/twitts">TWEETS</Link>
+										<Link className="link" to="/twitts">COLECTCIONES</Link>
 									</span>
 								</a>
 							</li>

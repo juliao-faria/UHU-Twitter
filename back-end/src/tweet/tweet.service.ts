@@ -188,7 +188,7 @@ export class TweetService {
           'count': -1
         }
       }, {
-        '$limit': 3
+        '$limit': 10
       }, {
         '$project': {
           '_id': 0, 
@@ -265,7 +265,7 @@ export class TweetService {
           'count': -1
         }
       }, {
-        '$limit': 3
+        '$limit': 10
       }
     ]
     return await this.mongooseProvider.aggregate(collection,pipeline);

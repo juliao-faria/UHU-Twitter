@@ -21,37 +21,58 @@ const Reportes = () => {
             <br />
             <br />
 			<Card>
-				<table className="table">
-					<thead>
-						<tr>
-							<th scope="col">Usuario</th>
-							<th scope="col">Texto</th>
-							<th scope="col">Url</th>
-							<th scope="col">Nº de amigos</th>
-							<th scope="col">Nº de seguidores</th>
-							<th scope="col">Nº de retweet</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-                            <td>Carlos</td>
-							<td>Argentina ganó la copa</td>
-							<td>http://localhost:3000/twitts</td>
-							<td>567</td>
-							<td>87</td>
-							<td>12</td>
-						</tr>
-                        <tr>
-							<td>Miguel David</td>
-							<td>Soy de Francia sin pena decirlo</td>
-							<td>http://localhost:3000/twitts</td>
-							<td>789</td>
-							<td>65</td>
-							<td>73</td>
-						</tr>
-					</tbody>
-				</table>
-				
+				{/**-----------------------------------------------RESULTADO DE LA CONSULTA HECHA --------------------------------------------------------- */}
+				<div className="col-lg-7">
+					<br />
+					<h5> Consulta Generada</h5>
+					<br />
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Nº</th>
+								<th scope="col">Usuario</th>
+								<th scope="col">Fecha Inicio</th>
+								<th scope="col">Fecha FInal</th>
+								<th scope="col">Idioma</th>
+								<th scope="col">Nº retweets</th>
+								<th scope="col">Nº mensiones</th>
+								<th scope="col">País</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">1</th>
+								<td>Mark</td>
+								<td>Otto</td>
+								<td>@mdo</td>
+								<td>@mdo</td>
+								<td>Mark</td>
+								<td>@mdo</td>
+								<td>Mark</td>
+							</tr>
+							<tr>
+								<th scope="row">2</th>
+								<td>Jacob</td>
+								<td>Thornton</td>
+								<td>@fat</td>
+								<td>@fat</td>
+								<td>Mark</td>
+								<td>@mdo</td>
+								<td>Mark</td>
+							</tr>
+							<tr>
+								<th scope="row">3</th>
+								<td>Larry</td>
+								<td>the Bird</td>
+								<td>@twitter</td>
+								<td>@twitter</td>
+								<td>Mark</td>
+								<td>@mdo</td>
+								<td>Mark</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</Card>
 		</div>
 	);

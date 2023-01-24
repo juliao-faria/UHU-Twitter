@@ -106,17 +106,17 @@ const Estatistica = () => {
 				});
 			});
 	};
-	const buscarUsuario= () => {
+
+	const buscarSchema= () => {
 		axios
-			.get("http://localhost:9876/api/v1/tweets/lang/tweets", {
+			.get("http://localhost:9876/api/v1/tweets/schema", {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				response.data.map((idioma) => {
-					setIdiomas((idiomas) => [...idiomas, idioma]);
-				});
+			console.log(response.data)
 			});
 	};
+
 
 	var date1 = new Date(fechas.oldestDate);
 	var date2 = new Date(fechas.newestDate);
@@ -130,6 +130,7 @@ const Estatistica = () => {
 		cantLikes()
 		buscarPaises()
 		buscarIdiomas()
+		buscarSchema()
 	}, []);
 	return (
 		<div className="container">
