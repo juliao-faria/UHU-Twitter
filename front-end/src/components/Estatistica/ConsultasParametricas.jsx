@@ -3,9 +3,13 @@ import Card from "../UI/Card";
 import {useState, useEffect} from "react";
 import axios from "axios";
 import "./ConsultasParametricas.css";
+import DateTimePicker from 'react-datetime-picker';
+import {useNavigate} from 'react-router-dom'; 
+
 
 const ConsultasParametricas = () => {
 	const [text, setText] = useState("");
+	const [schemas, setSchemas] = useState([]);
 	const [urlPopular, setUrlPopular] = useState({url: "", cantidad: ""});
 	const [top10Tweets, setTop10Tweets] = useState([]);
 	const [mensiones, setMensiones] = useState([]);
@@ -13,16 +17,18 @@ const ConsultasParametricas = () => {
 	const [liked, setLiked] = useState("");
 	const [paises, setPaises] = useState([]);
 	const [idiomas, setIdiomas] = useState([]);
-	const [newCollection, setNuevaColecion] = useState({
-		userName: "",
-		startDate: "",
-		endDate: "",
-		mentions: "",
-		retweet: "",
-		lang: "",
-		text: "",
-		newCollectionName: "",
-	});
+
+	const [selectedSchema, setSelectedSchema] = useState("");
+	const [nombreNuevaColeccion, setNombreNuevaColeccion] = useState("");
+	const [nombreUsuario, setNombreUsuario] = useState("");
+	const [minDate, setMinDate] = useState(null);
+	const [maxDate, setMaxDate] = useState(null);
+	const [language, setLanguage] = useState("");
+	const [retweetsCount, setRetweetsCount] = useState(0);
+	const [menciones, setMenciones] = useState(0);
+	const [texto, setTexto] = useState("");
+	const navigate = useNavigate(); 
+
 
 	const buscarSchema = () => {
 		axios
@@ -30,7 +36,9 @@ const ConsultasParametricas = () => {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				//console.log(response.data)
+				response.data.map((schema) => {
+					setSchemas((schemas) => [...schemas, schema]);
+				});
 			});
 	};
 	const buscarUsuarios = () => {
@@ -102,31 +110,109 @@ const ConsultasParametricas = () => {
 			});
 	};
 
-	const nuevaColecion = (e) => {
-		setNuevaColecion({
-			...newCollection,
-			[e.target.name]: e.target.value,
-		});
-	};
+	const elegirSchema = (e) => {
+		if (e.target.value === "Choose...") {
+			setSelectedSchema("")
+		} else {
+			setSelectedSchema(e.target.value)
+		}
+	}
+
+	const elegirUsuario = (e) => {
+		if (e.target.value === "Choose...") {
+			setNombreUsuario("");
+		} else {
+			setNombreUsuario(e.target.value)
+		}
+	}
+
+	const elegirMinDate = (newValue) => {
+		setMinDate(newValue)
+	  };
+
+	const elegirMaxDate = (newValue) => {
+		setMaxDate(newValue)
+	}
+
+	const elegirLang = (e) => {
+		if (e.target.value === "Choose...") {
+			setLanguage("");
+		} else {
+			setLanguage(e.target.value)
+		}
+	}
+
+	const elegirMenciones = (e) => {
+		setMenciones(e.target.value)
+	}
+	
+	const elegirRetweets = (e) => {
+		setRetweetsCount(e.target.value)
+	}
+
+	const elegirTexto = (e) => {
+		setTexto(e.target.value)
+	}
+
+	const elegirNombreNueva = (e) => {
+		setNombreNuevaColeccion(e.target.value)
+	}
+
+	function chequeo() {
+		if (selectedSchema == "") {
+			return "Seleccione una colección a la que realizar la consulta"
+		}
+		if (texto === ""
+			&&
+			(minDate == null && maxDate == null)
+			&&
+			retweetsCount === 0
+			&&
+			menciones == 0
+			&&
+			language == 0
+			&&
+			nombreUsuario == "") {
+				return "Seleccione al menos un filtro"
+		}
+		if ((minDate != null && maxDate == null) || (minDate == null && maxDate != null)) {
+			return "Si desea filtrar por fecha, ingrese ambos parametros"
+		}
+		if (nombreNuevaColeccion == "") {
+			return "Ingrese el nombre de la nueva colección"
+		}
+		return ""
+	}
 
 	const postNewCollection = (e) => {
 		e.preventDefault();
-		if (
-			newCollection.newCollectionName == "" ||
-			newCollection.newCollectionName == "Choose..."
-		) {
-			alert("Dale nombre a la coleción");
-		} else {
+		let mensaje = chequeo();
+		if (mensaje != "") {
+			alert(mensaje);
+		}
+		else {
+			console.log(`http://localhost:9876/api/v1/tweets/parametric/${selectedSchema}`);
+			let newCollection = {
+				userName: nombreUsuario != "" ? nombreUsuario : null,
+				startDate: minDate != null ? minDate : null,
+				endDate: maxDate != null ? maxDate : null,
+				mentions: menciones != 0 ? menciones : null,
+				retweet: retweetsCount != 0 ? retweetsCount : null,
+				lang: language != "" ? language : null,
+				text: texto != "" ? texto : null,
+				newCollectionName: nombreNuevaColeccion,
+			};
 			axios
 				.post(
-					"http://localhost:9876/api/v1/tweets/parametric/tweets",
+					`http://localhost:9876/api/v1/tweets/parametric/${selectedSchema}`,
 					newCollection,
 					{
 						headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 					}
 				)
 				.then((response) => {
-					console.log(response.data);
+					alert("Éxito");
+					navigate('/')
 				})
 				.catch((err) => {
 					alert("Usuario Incorrecto");
@@ -147,6 +233,20 @@ const ConsultasParametricas = () => {
 	return (
 		<React.Fragment>
 			<br />
+			<div className="col-auto my-0">
+				<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
+					Preference
+				</label>
+				<select
+					className="custom-select mr-sm-2"
+					id="inlineFormCustomSelect"
+					name="schemaName"
+					onChange={elegirSchema}
+				>
+					<option selected>Choose...</option>
+					{schemas.map(schema=><option value={schema}>{schema}</option>)}
+				</select>
+			</div>
 			<br />
 			<div className="col-lg-12">Colección</div>
 			<Card>
@@ -162,7 +262,7 @@ const ConsultasParametricas = () => {
 									className="custom-select mr-sm-2"
 									id="inlineFormCustomSelect"
 									name="userName"
-									onChange={nuevaColecion}
+									onChange={elegirUsuario}
 								>
 									<option selected>Choose...</option>
 									{usuarios.map(usuario=><option value={usuario.nombre}>{usuario.nombre}</option>)}
@@ -177,20 +277,8 @@ const ConsultasParametricas = () => {
 
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-									Preference
-								</label>
-								<select
-									className="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-									name="startDate"
-									onChange={nuevaColecion}
-								>
-									<option selected>Choose...</option>
-									<option value="2023-01-05T14:42:19.000Z">02/01/2023</option>
-								</select>
+								<DateTimePicker onChange={elegirMinDate} value={minDate} />
 							</div>
-
 							<div className="col-auto my-1">
 								<div className="custom-control custom-checkbox mr-sm-2">
 									<label>Fecha inicio</label>
@@ -199,18 +287,7 @@ const ConsultasParametricas = () => {
 						</div>
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-									Preference
-								</label>
-								<select
-									className="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-									name="endDate"
-									onChange={nuevaColecion}
-								>
-									<option selected>Choose...</option>
-									<option value="T2023-01-05T20:42:19.000Z">05/01/2023</option>
-								</select>
+								<DateTimePicker onChange={elegirMaxDate} value={maxDate} />
 							</div>
 
 							<div className="col-auto my-1">
@@ -222,47 +299,27 @@ const ConsultasParametricas = () => {
 
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-									Preference
-								</label>
-								<select
-									className="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-									name="mentions"
-									onChange={nuevaColecion}
-								>
-									<option selected>Choose...</option>
-									{mensiones.map((mension) => (
-										<option value={mension.mentions}>{mension.mentions}</option>
-									))}
-								</select>
+							<input
+								onChange={elegirMenciones}
+								value={menciones}
+							/>
 							</div>
 							<div className="col-auto my-1">
 								<div className="custom-control custom-checkbox mr-sm-2">
-									<label>Mensiones</label>
+									<label>Menciones</label>
 								</div>
 							</div>
 						</div>
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-									Preference
-								</label>
-								<select
-									className="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-									name="retweet"
-									onChange={nuevaColecion}
-								>
-									<option selected>Choose...</option>
-									{top10Tweets.map((retweet) => (
-										<option value={retweet.count}>{retweet.count}</option>
-									))}
-								</select>
+								<input
+									onChange={elegirRetweets}
+									value={retweetsCount}
+								/>
 							</div>
 							<div className="col-auto my-1">
 								<div className="custom-control custom-checkbox mr-sm-2">
-									<label>Buscar por catidad de retwets</label>
+									<label>Catidad de retweets</label>
 								</div>
 							</div>
 						</div>
@@ -275,7 +332,7 @@ const ConsultasParametricas = () => {
 									className="custom-select mr-sm-2"
 									id="inlineFormCustomSelect"
 									name="lang"
-									onChange={nuevaColecion}
+									onChange={elegirLang}
 								>
 									<option selected>Choose...</option>
 									<option value="es">Español</option>
@@ -290,45 +347,39 @@ const ConsultasParametricas = () => {
 						</div>
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-									Preference
-								</label>
-								<select
-									className="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-									name="text"
-									onChange={nuevaColecion}
-								>
-									<option selected>Choose...</option>
-									{paises.map((pais) => (
-										<option value={pais._is}>{pais._id}</option>
-									))}
-								</select>
+								<input
+									required
+									type="text"
+									className="form-control"
+									name="texto"
+									value={texto}
+									onChange={elegirTexto}
+								/>
 							</div>
 							<div className="col-auto my-1">
 								<div className="custom-control custom-checkbox mr-sm-2">
-									<label>Países</label>
+									<label>Texto en el Tweet</label>
 								</div>
 							</div>
 						</div>
 						<br />
 						<div className="form-row align-items-center">
 							<label htmlfor="editor" class="form-label">
-								Nombre de la nuevaColecion colección
+								Nombre de la nueva colección
 							</label>
 							<input
 								required
 								type="text"
 								className="form-control"
 								name="newCollectionName"
-								value={newCollection.newCollectionName}
-								onChange={nuevaColecion}
+								value={nombreNuevaColeccion}
+								onChange={elegirNombreNueva}
 							/>
 						</div>
 						<div>
 							<br />
 							<button onClick={postNewCollection} className="btn btn-primary ">
-								nuevaColecion colección
+								Generar
 							</button>
 						</div>
 						<br />
