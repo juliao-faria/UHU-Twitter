@@ -122,7 +122,6 @@ const Estatistica = () => {
 		cantLikes()
 		buscarPaises()
 		buscarIdiomas()
-		
 	}, []);
 	return (
 		<div className="container">
