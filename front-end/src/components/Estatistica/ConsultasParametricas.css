@@ -1,5 +1,12 @@
 .fecha{
    background: white;
-   border-radius: 7px;
-   border: 1p solid white;
+}
+.darAlto{
+    height: 2rem;
+}
+.collection{
+    margin-left: 2rem;
+}
+button{
+    border-radius: px!important;
 }
