@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import { format } from 'date-fns';
 
 const ConsultasParametricas = () => {
+	
 	const [schemas, setSchemas] = useState([]);
 	const [usuarios, setUsuario] = useState([]);
 	const [selectedSchema, setSelectedSchema] = useState("");
@@ -163,6 +164,7 @@ const ConsultasParametricas = () => {
 	return (
 		<React.Fragment>
 			<br />
+			<br />
 			<div className="col-auto my-0">
 				<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
 					Preference
@@ -179,7 +181,7 @@ const ConsultasParametricas = () => {
 			</div>
 			<br />	
 			<br />
-			<div className="col-lg-12">Colección</div>
+			
 			<Card>
 				<br />
 				<div className="row">
@@ -200,7 +202,7 @@ const ConsultasParametricas = () => {
 								</select>
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Buscar por usuario</label>
 								</div>
 							</div>
@@ -208,21 +210,21 @@ const ConsultasParametricas = () => {
 
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<DateTimePicker onChange={elegirMinDate} value={minDate} />
+								<DateTimePicker className="fecha" onChange={elegirMinDate} value={minDate} />
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Fecha inicio</label>
 								</div>
 							</div>
 						</div>
 						<div className="form-row align-items-center">
 							<div className="col-auto my-1">
-								<DateTimePicker onChange={elegirMaxDate} value={maxDate} />
+								<DateTimePicker className="fecha" onChange={elegirMaxDate} value={maxDate} />
 							</div>
 
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Fecha final</label>
 								</div>
 							</div>
@@ -236,7 +238,7 @@ const ConsultasParametricas = () => {
 							/>
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Menciones</label>
 								</div>
 							</div>
@@ -249,7 +251,7 @@ const ConsultasParametricas = () => {
 								/>
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Catidad de retweets</label>
 								</div>
 							</div>
@@ -271,7 +273,7 @@ const ConsultasParametricas = () => {
 								</select>
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Idiomas</label>
 								</div>
 							</div>
@@ -288,7 +290,7 @@ const ConsultasParametricas = () => {
 								/>
 							</div>
 							<div className="col-auto my-1">
-								<div className="custom-control custom-checkbox mr-sm-2">
+								<div className=" custom-checkbox mr-sm-2">
 									<label>Texto en el Tweet</label>
 								</div>
 							</div>

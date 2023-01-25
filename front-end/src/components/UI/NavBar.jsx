@@ -35,8 +35,8 @@ const NavBar = ({salir}) => {
 								</a>
 							</li>
 							<li className="nav-item active">
-								<a className="nav-link">
-									<button onClick={salir} className="btn btn-prymary">Salir</button>
+								<a  onClick={salir} className="nav-link salir  pt-2">
+									SALIR
 								</a>
 							</li>
 						</ul>

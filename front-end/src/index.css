@@ -9,9 +9,10 @@ src: url("./fonts/Roboto/Roboto-Black.ttf");
 
 }
 :root{
---azul:#05133f;
+--azul:#10235e;
 --blanco:white;
 --grey: rgb(195, 195, 194);
---azul1:#44579d;
+--azul1:#5a6fb9;
+--nergro:rgb(0, 0, 0);
 }
   
