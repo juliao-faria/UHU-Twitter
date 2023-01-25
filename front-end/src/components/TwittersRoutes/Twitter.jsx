@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {BrowserRouter, Routes, Navigate, Route} from "react-router-dom";
 import ConsultasParametricas from "../Estatistica/ConsultasParametricas";
 import Estatistica from "../Estatistica/Estatisticas";
-import Reportes from "../Estatistica/Reportes";
 import NavBar from "../UI/NavBar";
 import Longin from "../Login/Login";
 

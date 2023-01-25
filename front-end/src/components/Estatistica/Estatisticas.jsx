@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import Card from "../UI/Card";
 import axios from "axios";
 import "./Estatistica.css";
@@ -11,7 +11,7 @@ const Estatistica = () => {
 	const [urlPopular, setUrlPopular] = useState({url: "", cantidad: ""});
 	const [cantTweets, setCantTweets] = useState("");
 	const [mensiones, setMensiones] = useState([]);
-	const [liked, setLiked] = useState('');
+	const [liked, setLiked] = useState("");
 	const [paises, setPaises] = useState([]);
 	const [idiomas, setIdiomas] = useState([]);
 	const [schemas, setSchemas] = useState([]);
@@ -22,7 +22,7 @@ const Estatistica = () => {
 		setUrlPopular({url: "", cantidad: ""});
 		setCantTweets("");
 		setMensiones([]);
-		setLiked('');
+		setLiked("");
 		setPaises([]);
 		setIdiomas([]);
 		setSchemas([]);
@@ -35,7 +35,7 @@ const Estatistica = () => {
 		cantLikes();
 		buscarPaises();
 		buscarIdiomas();
-	}
+	};
 
 	const buscarSchema = () => {
 		axios
@@ -98,25 +98,27 @@ const Estatistica = () => {
 
 	const mensionTweets = () => {
 		axios
-			.get(`http://localhost:9876/api/v1/tweets/top-mentions/${selectedSchema}`, {
-				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
-			})
+			.get(
+				`http://localhost:9876/api/v1/tweets/top-mentions/${selectedSchema}`,
+				{
+					headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
+				}
+			)
 			.then((response) => {
-				setMensiones(response.data)
+				setMensiones(response.data);
 			})
 			.finally(() => {
 				console.log(mensiones);
 			});
 	};
 
-	
 	const cantLikes = () => {
 		axios
 			.get(`http://localhost:9876/api/v1/tweets/likes/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				setLiked(response.data.text)
+				setLiked(response.data.text);
 			});
 	};
 	const buscarPaises = () => {
@@ -125,55 +127,64 @@ const Estatistica = () => {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				setPaises(response.data)
+				setPaises(response.data);
 			});
 	};
 
-	const buscarIdiomas= () => {
+	const buscarIdiomas = () => {
 		axios
 			.get(`http://localhost:9876/api/v1/tweets/lang/${selectedSchema}`, {
 				headers: {Authorization: `Bearer ${localStorage.getItem("auth")}`},
 			})
 			.then((response) => {
-				setIdiomas(response.data)
+				setIdiomas(response.data);
 			});
 	};
 
 	const elegirSchema = (e) => {
 		if (e.target.value === "Choose...") {
-			setSelectedSchema("")
+			setSelectedSchema("");
 		} else {
-			setSelectedSchema(e.target.value)
+			setSelectedSchema(e.target.value);
 		}
-	}
+	};
 
 	useEffect(() => {
-		reload()
-	}, [selectedSchema])
+		reload();
+	}, [selectedSchema]);
 
 	if (fechas != null && fechas.oldestDate != null) {
 		var date1 = new Date(fechas.oldestDate);
 		var date2 = new Date(fechas.newestDate);
 	}
-	
+
 	return (
-		<div className="container">
+		<React.Fragment>
 			<br />
 			<br />
-			<div className="col-auto my-0">
-				<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
-					Preference
-				</label>
-				<select
-					className="custom-select mr-sm-2"
-					id="inlineFormCustomSelect"
-					name="schemaName"
-					onChange={elegirSchema}
-					value={selectedSchema}
-				>
-					{schemas.map(schema=><option value={schema}>{schema}</option>)}
-				</select>
-			</div>
+
+			<Card>
+				<br />
+				<div className="col-auto my-0">
+					<label className="mr-sm-2 sr-only" for="inlineFormCustomSelect">
+						Preference
+					</label>
+					<select
+						className="darAlto border_color mr-sm-2"
+						id="inlineFormCustomSelect"
+						name="schemaName"
+						onChange={elegirSchema}
+						value={selectedSchema}
+					>
+						{schemas.map((schema) => (
+							<option value={schema}>{schema}</option>
+						))}
+					</select>
+					<label>Elegir colección</label>
+				</div>
+				<br />
+			</Card>
+
 			<br />
 			<Card>
 				<table className="table">
@@ -181,16 +192,17 @@ const Estatistica = () => {
 						<h5 className="p-4">Datos general</h5>
 						<tr>
 							<td>Fechas</td>
-							{
-								date1 != null && date2 != null &&
+							{date1 != null && date2 != null && (
 								<td>
 									Primer Registro: {date1.getDate()}/{date1.getMonth() + 1}/
-									{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}s.
-									<br/>
+									{date1.getFullYear()}/{date1.getHours()}h:{date1.getMinutes()}
+									s.
+									<br />
 									Ultimo Registro: {date2.getDate()}/{date2.getMonth() + 1}/
-									{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}s.
+									{date2.getFullYear()}/{date2.getHours()}h:{date2.getMinutes()}
+									s.
 								</td>
-							}
+							)}
 						</tr>
 						<tr>
 							<td>Texto del tweet con más retweets</td>
@@ -198,13 +210,12 @@ const Estatistica = () => {
 						</tr>
 						<tr>
 							<td>Url más popular</td>
-							{
-								urlPopular != null &&
+							{urlPopular != null && (
 								<td>
-								{urlPopular.url} -{" "}
-								<span>Numero de veces {urlPopular.cantidad}</span>
-							</td>
-							}
+									{urlPopular.url} -{" "}
+									<span>Numero de veces {urlPopular.cantidad}</span>
+								</td>
+							)}
 						</tr>
 						<tr>
 							<td>Cantidad de tweets en la colección</td>
@@ -212,9 +223,7 @@ const Estatistica = () => {
 						</tr>
 						<tr>
 							<td>Texto del tweet con más likes</td>
-							<td>
-								{liked}
-							</td>
+							<td>{liked}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -224,7 +233,7 @@ const Estatistica = () => {
 			<Card>
 				<table className="table">
 					<thead>
-					<h5 className="p-4">Usuarios y mensiones</h5>
+						<h5 className="p-4">Usuarios y mensiones</h5>
 						<tr>
 							<th scope="col">Usuario </th>
 							<th scope="col">Mensiones</th>
@@ -245,7 +254,7 @@ const Estatistica = () => {
 			<Card>
 				<table className="table">
 					<thead>
-					<h5 className="p-4">Paises más frecuentes</h5>
+						<h5 className="p-4">Paises más frecuentes</h5>
 						<tr>
 							<th scope="col">País </th>
 							<th scope="col">Cantidad de veces</th>
@@ -265,7 +274,7 @@ const Estatistica = () => {
 			<Card>
 				<table className="table">
 					<thead>
-					<h5 className="p-4">Idiomas en los tweets</h5>
+						<h5 className="p-4">Idiomas en los tweets</h5>
 						<tr>
 							<th scope="col">Idioma </th>
 							<th scope="col">Número de tweets</th>
@@ -281,7 +290,7 @@ const Estatistica = () => {
 					</tbody>
 				</table>
 			</Card>
-		</div>
+		</React.Fragment>
 	);
 };
 

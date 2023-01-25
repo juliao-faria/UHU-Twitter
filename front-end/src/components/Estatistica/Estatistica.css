@@ -1,0 +1,5 @@
+.border_color{
+    border-color: var(--blanco);
+    background: rgb(236, 236, 232);
+    border: 0px solid rgb(236, 236, 232);;
+}

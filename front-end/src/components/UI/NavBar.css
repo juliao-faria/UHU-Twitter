@@ -1,10 +1,15 @@
 
 .fontnav {
-    color:  var(--azul);
+    color:  var(--negro)!important;
     font-size: 16px;
     font-family: fuente1;
   }
-  
+  .salir{
+    color:  var(--negro)!important;
+    font-size: 16px;
+    font-family: fuente1;
+    cursor: pointer;
+  }
   
   /*#233e62*/
   .bg-nav{
@@ -15,12 +20,12 @@
   }
   
   .spn{
-    color:var(--azul);
+    color:var(--negro);
     font-family: fuente1;
     font-size: 20px;
   }
 
   .link{
-    color:  var(--azul);
+    color:  var(--negro);
     text-decoration: none!important;
   }
